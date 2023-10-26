@@ -5,12 +5,8 @@ const useRestarurant = () => {
   const [restaurant, setRestaurant] = useState([])
   const [detailRestaurant, setDetailRestaurant] = useState([])
   
-  function generateRandomTime() {
-    const hours = Math.floor(Math.random() * 12); // Jam acak dalam format 1-12
-    const minutes = Math.floor(Math.random() * 60); // Menit acak
-    const amOrPm = Math.random() < 0.5 ? "AM" : "PM"; // Acak AM atau PM
-  
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
+  function randomOpenOrClosed() {
+    return Math.random() < 0.5 ? "open" : "closed";
   }
 
   function generateRandomPriceRange() {
@@ -27,14 +23,12 @@ const useRestarurant = () => {
         })
         const data = await res.json()
         const restaurantsWithRandomValues = data.restaurants.map(restaurant => {
-            const openingHours = generateRandomTime();
-            const closingHours = generateRandomTime();
+            const open = randomOpenOrClosed();
             const priceRange = generateRandomPriceRange();
           
             return {
               ...restaurant,
-              opening_hours: openingHours,
-              closing_hours: closingHours,
+              status_open: open,
               price_range: priceRange
             };
           });
@@ -58,12 +52,45 @@ const useRestarurant = () => {
         throw err
     }
  }
+ 
+ const filterCategory = async (category:string, filterOptions:any) => {
+    try{
+        const res = await fetch(`${api}/search?q=${category}`,{
+            method: 'GET',
+        })
+        const data = await res.json()
+        const restaurantsWithRandomValues = data.restaurants.map(restaurant => {
+            const open = randomOpenOrClosed();
+            const priceRange = generateRandomPriceRange();
+          
+            return {
+              ...restaurant,
+              status_open: open,
+              price_range: priceRange
+            };
+          });
+        
+        if(filterOptions?.openNow || filterOptions?.price){
+            const filtered = restaurantsWithRandomValues?.filter((item)=>item?.status_open === 'open' || item?.price_range === filterOptions?.price)
+            setRestaurant(filtered)
+            return filtered
+        }else{
+            setRestaurant(restaurantsWithRandomValues)
+            return restaurantsWithRandomValues
+        }
+    } catch(err){
+        console.log(err)
+        throw err
+    }
+}
+
 
   return{
     restaurant,
     getRestaurant,
     getDetailRestaurant,
-    detailRestaurant
+    detailRestaurant,
+    filterCategory
   }
 }
 
