@@ -1,21 +1,31 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const CardRestaurant:React.FC = () => {
+const CardRestaurant:React.FC = ({data}) => {
+
+  // const navigate = useNavigate();
+
+  // const handleDetail = () => {
+  //   navigate.push(`/DetailRestaurant/${data?.id}`)
+  // }
   return (
     <>
-      <div className='bg-white text-black w-[15vw] h-auto mt-5 p-0'>
-        <div className='w-full h-auto'>
-            <img src="https://via.placeholder.com/150" alt="Restaurant Image" className=' object-cover w-full' />
+      <div className='bg-white text-black w-[15vw] h-full mt-5 p-0'>
+        <div className='w-full h-[13rem]'>
+            <img src={`https://restaurant-api.dicoding.dev/images/medium/${data?.pictureId}`} alt="Restaurant Image" className=' object-cover w-full h-full' />
         </div>
         <div className='flex flex-col pb-2'>
-          <h3 className='font-semibold'>Restaurant Name</h3>
-          <p>Rating</p>
+          <h3 className='font-semibold'>{data?.name}</h3>
+          <p>{data?.rating}</p>
         </div>
-        <div className='flex flex-row justify-between text-[0.6rem] font-semibold py-2'>
-            <p>THAI && JAPANESE</p>
+        <div className='flex flex-row justify-between text-[0.8rem] font-semibold py-2'>
+            <p>{data?.city}</p>
             <p>OPEN NOW</p>
         </div>
-        <button className='text-center w-full bg-blue-800 py-2 text-white'>LEARN MORE</button>
+        <Link to={`/DetailRestaurant/${data?.id}`}>
+          <button className='text-center w-full bg-blue-800 py-2 text-white'>Detail</button>
+        </Link>
+        
       </div>
     </>
   )
