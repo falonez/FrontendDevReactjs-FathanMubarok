@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import useRestarurant from '../hooks/useRestarurant'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
 const DetailRestaurant : React.FC = () => {
   const {getDetailRestaurant, detailRestaurant} = useRestarurant()
@@ -28,6 +28,11 @@ const DetailRestaurant : React.FC = () => {
         </div>
         <p className='mb-10 text-lg'>{detailRestaurant?.city}, {detailRestaurant?.address}</p>
         <p className=' text-lg'>{detailRestaurant?.description}</p>
+        <div className='flex justify-end'>
+          <Link to='/'>
+            <button className='text-center w-20 bg-blue-800 py-2 text-white hover:bg-blue-500 mt-10'>Back</button>
+          </Link>
+        </div>
       </div>
     </>
   )
