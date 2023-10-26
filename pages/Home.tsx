@@ -2,6 +2,23 @@ import {useEffect, useState} from 'react'
 import CardRestaurant from '../components/CardRestaurant'
 import useRestarurant from '../hooks/useRestarurant'
 
+interface RestaurantAll {
+  id: string;
+  name: string;
+  description: string;
+  pictureId: string;
+  city: string;
+  rating: number;
+  status_open: string;
+  price_range: string;
+}
+
+interface filterOptions{
+  openNow: boolean;
+  price: string;
+  categories: string;
+}
+
 const Home : React.FC = () => {
 
   const {getRestaurant, restaurant,filterCategory} = useRestarurant()
@@ -15,7 +32,7 @@ const Home : React.FC = () => {
     setLoadMore(loadMore+1)
   }
 
-  const [filterOptions, setFilterOptions] = useState({
+  const [filterOptions, setFilterOptions] = useState<filterOptions>({
     openNow: false,
     price: "",
     categories: ""
@@ -24,8 +41,8 @@ const Home : React.FC = () => {
   useEffect(()=>{
     setFilteredRestaurants(restaurant)
   },[restaurant])
-
-  const [filteredRestaurants, setFilteredRestaurants] = useState();
+  console.log(restaurant)
+  const [filteredRestaurants, setFilteredRestaurants] = useState<RestaurantAll[]>();
   useEffect(()=>{    
     if(filterOptions?.categories){
       filterCategory(filterOptions?.categories, filterOptions)
@@ -33,16 +50,15 @@ const Home : React.FC = () => {
   },[filterOptions?.categories])
   
   useEffect(()=>{
-      let filtered = []
       if(filterOptions?.openNow){
-        setFilteredRestaurants(filtered = filteredRestaurants?.filter((item)=>item?.status_open === 'open'))
+        setFilteredRestaurants(filteredRestaurants?.filter((item)=>item?.status_open === 'open'))
       }else{
         setFilteredRestaurants(restaurant)
       }
   },[filterOptions?.openNow])
 
   useEffect(()=>{
-      const filtered = filteredRestaurants?.filter((item)=>item?.price_range === filterOptions?.price)
+      const filtered = filteredRestaurants?.filter((item : RestaurantAll)=>item?.price_range === filterOptions?.price)
       if(filtered?.length === 0){
         setFilteredRestaurants(restaurant)
       }else{ 
@@ -91,14 +107,15 @@ const Home : React.FC = () => {
         <hr />
         <h1 className='py-5 text-2xl'>All Restaurant</h1>
         <div className='grid grid-cols-[1fr_1fr_1fr_1fr] gap-20'>
-          {filteredRestaurants?.slice(0,8*loadMore).map((item,index)=>{
+          {filteredRestaurants && filteredRestaurants?.slice(0,8*loadMore).map((item:RestaurantAll,index :number)=>{
             return(
+              // @ts-ignore
               <CardRestaurant key={index} data={item}/>
             )
           })}
         </div>
-        {filteredRestaurants?.length === 0 && <div className='text-center text-2xl mt-20'>No Restaurant Found</div>}
-        {filteredRestaurants?.length > 8*loadMore && <div className=' self-center w-auto border-2 border-blue-800 text-blue-800 text-center mt-20 py-4 px-12 hover:bg-blue-800 hover:text-white cursor-pointer' onClick={handleLoadMore}>LOAD MORE</div>}
+        {filteredRestaurants && filteredRestaurants?.length === 0 && <div className='text-center text-2xl mt-20'>No Restaurant Found</div>}
+        {filteredRestaurants && filteredRestaurants?.length > 8*loadMore && <div className=' self-center w-auto border-2 border-blue-800 text-blue-800 text-center mt-20 py-4 px-12 hover:bg-blue-800 hover:text-white cursor-pointer' onClick={handleLoadMore}>LOAD MORE</div>}
       </div>
     </>
   )

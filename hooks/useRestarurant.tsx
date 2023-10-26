@@ -1,9 +1,46 @@
 import {useState} from 'react'
 
+interface Restaurant {
+    id: string;
+    name: string;
+    description: string;
+    city: string;
+    address: string;
+    pictureId: string;
+    categories: { name: string }[];
+    menus: {
+        foods: { name: string }[];
+        drinks: { name: string }[];
+    };
+    rating: number;
+    customerReviews: {
+        name: string;
+        review: string;
+        date: string;
+    }[];
+}
+
+interface RestaurantAll {
+    id: string;
+    name: string;
+    description: string;
+    pictureId: string;
+    city: string;
+    rating: number;
+    status_open: string;
+    price_range: string;
+}
+
+interface filterOptions{
+    openNow: boolean;
+    price: string;
+    categories: string;
+  }
+
 const useRestarurant = () => {
   const api = 'https://restaurant-api.dicoding.dev/'
-  const [restaurant, setRestaurant] = useState([])
-  const [detailRestaurant, setDetailRestaurant] = useState([])
+  const [restaurant, setRestaurant] = useState<RestaurantAll[]>([])
+  const [detailRestaurant, setDetailRestaurant] = useState<Restaurant>()
   
   function randomOpenOrClosed() {
     return Math.random() < 0.5 ? "open" : "closed";
@@ -53,7 +90,7 @@ const useRestarurant = () => {
     }
  }
  
- const filterCategory = async (category:string, filterOptions:any) => {
+ const filterCategory = async (category:string, filterOptions:filterOptions) => {
     try{
         const res = await fetch(`${api}/search?q=${category}`,{
             method: 'GET',

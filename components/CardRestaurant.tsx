@@ -1,7 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const CardRestaurant:React.FC = ({data}) => {
+
+interface RestaurantAll {
+  id: string;
+  name: string;
+  description: string;
+  pictureId: string;
+  city: string;
+  rating: number;
+  status_open: string;
+  price_range: string;
+}
+
+const CardRestaurant:React.FC = ({data}:{data:RestaurantAll}) => {
   return (
     <>
       <div className='bg-white text-black w-[15vw] h-full mt-5 p-0'>
@@ -11,9 +23,9 @@ const CardRestaurant:React.FC = ({data}) => {
         <div className='flex flex-col pb-2'>
           <h3 className='font-semibold mt-2 text-lg'>{data?.name}</h3>
           <div className='flex flex-row py-2'>
-          {[...Array(5)].map((star, i) => {
+          {[...Array(5)].map((i) => {
             return Math.floor(data?.rating) > i ? (
-              <img src="/star-full.svg" key={i} alt="" className='w-4 h-5' />
+              <img src={`/star-full.svg`} key={i} alt="" className='w-4 h-5' />
             ) : (
               <img src="/star.svg" key={i} alt="" className='w-4 h-5' />
             )
