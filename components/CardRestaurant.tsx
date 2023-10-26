@@ -21,7 +21,7 @@ const CardRestaurant:React.FC = ({data}:{data:RestaurantAll}) => {
             <img src={`https://restaurant-api.dicoding.dev/images/medium/${data?.pictureId}`} alt="Restaurant Image" className=' object-cover w-full h-full' />
         </div>
         <div className='flex flex-col pb-2'>
-          <h3 className='font-semibold mt-2 text-lg'>{data?.name}</h3>
+          <h3 className='font-semibold mt-2 text-lg font-nunito'>{data?.name}</h3>
           <div className='flex flex-row py-2'>
           {[1,2,3,4,5].map((i) => {
             return Math.floor(data?.rating) > i ? (

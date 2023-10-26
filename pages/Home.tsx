@@ -78,8 +78,8 @@ const Home : React.FC = () => {
   return (
     <>
       <div className='mx-[12%] flex flex-col mb-10'>
-        <h1 className='text-4xl font-bold mt-10'>TuangKeun Kuy</h1>
-        <p className='py-5 text-lg fontsemi'>"Tuangkeun Kuy" adalah platform inovatif yang memungkinkan para pecinta kuliner untuk menjelajahi dan menemukan beragam restoran di seluruh Indonesia. Dengan koleksi yang komprehensif dari restoran-restoran terbaik di berbagai kota, Tuangkeun Euy menjadi teman setia bagi mereka yang ingin menggali pengalaman kuliner yang tak terlupakan di seluruh negeri.</p>
+        <h1 className='text-4xl font-bold mt-10 font-pacifio mb-10'>TuangKeun Kuy</h1>
+        <p className='py-5 text-lg font-medium font-nunito'>"Tuangkeun Kuy" adalah platform inovatif yang memungkinkan para pecinta kuliner untuk menjelajahi dan menemukan beragam restoran di seluruh Indonesia. Dengan koleksi yang komprehensif dari restoran-restoran terbaik di berbagai kota, Tuangkeun Euy menjadi teman setia bagi mereka yang ingin menggali pengalaman kuliner yang tak terlupakan di seluruh negeri.</p>
         <hr />
         <div className='flex flex-row justify-between py-3'>
           <div className='flex gap-4 items-center'>
@@ -115,7 +115,7 @@ const Home : React.FC = () => {
           })}
         </div>
         {filteredRestaurants && filteredRestaurants?.length === 0 && <div className='text-center text-2xl mt-20'>No Restaurant Found</div>}
-        {filteredRestaurants && filteredRestaurants?.length > 8*loadMore && <div className=' self-center w-auto border-2 border-blue-800 text-blue-800 text-center mt-20 py-4 px-12 hover:bg-blue-800 hover:text-white cursor-pointer' onClick={handleLoadMore}>LOAD MORE</div>}
+        {filteredRestaurants && filteredRestaurants?.length > 8*loadMore && <div className='font-nunito self-center w-auto border-2 border-blue-800 text-blue-800 text-center mt-20 py-4 px-12 hover:bg-blue-800 hover:text-white cursor-pointer' onClick={handleLoadMore}>LOAD MORE</div>}
       </div>
     </>
   )

@@ -7,6 +7,10 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      pacifio: ["Pacifico", "cursive"],
+      nunito: ["Nunito", "sans-serif"],
+    },
     extend: {},
   },
   plugins: [],
