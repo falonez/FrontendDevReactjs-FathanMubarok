@@ -1,11 +1,10 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import useRestarurant from '../hooks/useRestarurant'
 import {Link, useParams} from 'react-router-dom'
 
 const DetailRestaurant : React.FC = () => {
   const {getDetailRestaurant, detailRestaurant} = useRestarurant()
   const {id} = useParams()
-  const [review, setReview] = useState('')
 
   useEffect(() => {
     getDetailRestaurant(String(id))
