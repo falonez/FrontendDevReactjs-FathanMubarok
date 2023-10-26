@@ -23,7 +23,7 @@ const CardRestaurant:React.FC = ({data}:{data:RestaurantAll}) => {
         <div className='flex flex-col pb-2'>
           <h3 className='font-semibold mt-2 text-lg'>{data?.name}</h3>
           <div className='flex flex-row py-2'>
-          {[...Array(5)].map((i) => {
+          {[1,2,3,4,5].map((i) => {
             return Math.floor(data?.rating) > i ? (
               <img src={`/star-full.svg`} key={i} alt="" className='w-4 h-5' />
             ) : (

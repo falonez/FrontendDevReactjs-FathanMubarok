@@ -18,7 +18,7 @@ const DetailRestaurant : React.FC = () => {
       <div className='mx-[12%] flex flex-col mb-10 pt-10'>
         <h1 className='text-5xl font-semibold'>{detailRestaurant?.name}</h1>
         <div className='flex flex-row py-3'>
-          {[...Array(5)].map((i) => {
+          {[1,2,3,4,5].map((i) => {
             return Math.floor(detailRestaurant?.rating) > i ? (
               <img src="/star-full.svg" key={i} alt="" className='w-6 h-6' />
             ) : (
