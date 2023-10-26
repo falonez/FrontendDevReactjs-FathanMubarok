@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {toast} from '../utils/SweetAlert'
 
 interface Restaurant {
     id: string;
@@ -37,6 +38,11 @@ interface filterOptions{
     categories: string;
   }
 
+interface reviewForm{
+    id: string;
+    name: string;
+    review: string;
+}
 const useRestarurant = () => {
   const api = 'https://restaurant-api.dicoding.dev/'
   const [restaurant, setRestaurant] = useState<RestaurantAll[]>([])
@@ -120,13 +126,32 @@ const useRestarurant = () => {
     }
 }
 
+const addReview = async (form:reviewForm) => {
+    try{
+        const res = await fetch(`${api}/review`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form)
+        })
+        const data = await res.json()
+        getDetailRestaurant(form.id)
+        toast('success', 'Review Added')
+        return data
+    }catch{
+        throw new Error('Error')
+    }
+}
+
 
   return{
     restaurant,
     getRestaurant,
     getDetailRestaurant,
     detailRestaurant,
-    filterCategory
+    filterCategory,
+    addReview
   }
 }
 

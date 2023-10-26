@@ -1,15 +1,32 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import useRestarurant from '../hooks/useRestarurant'
 import {Link, useParams} from 'react-router-dom'
 
 const DetailRestaurant : React.FC = () => {
-  const {getDetailRestaurant, detailRestaurant} = useRestarurant()
+  const {getDetailRestaurant, detailRestaurant, addReview} = useRestarurant()
   const {id} = useParams()
+  const [reviewState, setReview] = useState({
+    id: String(id),
+    name: '',
+    review: ''
+  })
+  const [reviewReverse, setReviewReverse] = useState([])
+  
+  useEffect(()=>{
+    setReviewReverse(detailRestaurant?.customerReviews?.reverse())
+  },[detailRestaurant?.customerReviews])
 
   useEffect(() => {
     getDetailRestaurant(String(id))
   },[])
 
+  const handleAddReview = () => {
+    addReview(reviewState).then((res)=>{
+      console.log(res)
+    })
+  }
+  console.log(reviewReverse)
+  console.log(detailRestaurant?.customerReviews?.reverse())
   return (
     <>
       <div className='w-full h-[20rem]'>
@@ -35,8 +52,13 @@ const DetailRestaurant : React.FC = () => {
         <p className=' text-lg'>{detailRestaurant?.description}</p>
         <div className='mt-10 justify-start flex'>
           <div className='w-full h-full flex flex-col'>
+            <input type="text" placeholder='Name' className='h-10 p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, name:e.target.value})}/>
+            <textarea placeholder='Please Give your Review' className='h-[5rem] p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, review:e.target.value})}/>
+            <div className='flex justify-end mb-10'>
+              <button className='text-center w-20 bg-blue-800 py-2 text-white hover:bg-blue-500' onClick={handleAddReview}>Send</button>
+            </div>
             <div className='w-full h-full'>
-              {detailRestaurant?.customerReviews.map((item,index)=>{
+              {reviewReverse?.map((item,index)=>{
                 return(
                   <div key={index} className='h-auto p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg flex flex-col gap-2'>
                     <p className=' font-semibold'>{item.name}</p>
