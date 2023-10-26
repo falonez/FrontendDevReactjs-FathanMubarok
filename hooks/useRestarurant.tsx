@@ -83,7 +83,6 @@ const useRestarurant = () => {
         })
         const data = await res.json()
         setDetailRestaurant(data.restaurant)
-        console.log(data.restaurant)
     }catch(err){
         console.log(err)
         throw err
