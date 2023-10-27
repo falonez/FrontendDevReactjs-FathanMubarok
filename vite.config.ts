@@ -8,7 +8,14 @@ export default defineConfig({
     react(), // Plugin React (jika Anda menggunakan React)
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      workbox: {
+        globPatterns: ["**/*"],
+      },
+      // add this to cache all the
+      // static assets in the public folder
+      includeAssets: [
+          "**/*",
+      ],
       manifest: {
         name: "Tuangkeun Kuy",
         short_name: "Tuangkeun Kuy",
@@ -43,14 +50,6 @@ export default defineConfig({
         scope: "/",
         start_url: "/",
         orientation: "portrait",
-      },
-      workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: new RegExp('^https://api.example.com/'),
-            handler: 'StaleWhileRevalidate',
-          },
-        ],
       },
     }),
   ],
