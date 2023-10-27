@@ -33,6 +33,45 @@ export default defineConfig({
                 maxEntries: 10,
               },
             },
+          },
+          {
+            urlPattern: new RegExp('^https://restaurant-api.dicoding.dev/detail'),
+            handler: "CacheFirst" as const,
+            options: {
+              cacheName: "Detail",
+              cacheableResponse: {
+                statuses: [0,200],
+              },
+              expiration: {
+                maxEntries: 10,
+              },
+            },
+          },
+          {
+            urlPattern: new RegExp('^https://restaurant-api.dicoding.dev/images'),
+            handler: "CacheFirst" as const,
+            options: {
+              cacheName: "Images",
+              cacheableResponse: {
+                statuses: [0,200],
+              },
+              expiration: {
+                maxEntries: 10,
+              },
+            },
+          },
+          {
+            urlPattern: new RegExp('^https://restaurant-api.dicoding.dev/review'),
+            handler: "CacheFirst" as const,
+            options: {
+              cacheName: "Review",
+              cacheableResponse: {
+                statuses: [0,200],
+              },
+              expiration: {
+                maxEntries: 10,
+              },
+            },
           }
         ],
       },
