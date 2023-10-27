@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA, VitePWAOptions  } from "vite-plugin-pwa";
+import workbox from 'workbox-sw';
 const manifestForPlugIn : Partial <VitePWAOptions> = {
   registerType: "prompt",
 	includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
@@ -43,5 +44,39 @@ const manifestForPlugIn : Partial <VitePWAOptions> = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugIn)],
+  plugins: [
+    react(), 
+    VitePWA(manifestForPlugIn),
+    workbox({
+      // Opsi Workbox
+      precaching: [
+        {
+          // Nama cache
+          cacheName: 'my-app',
+          // File-file yang akan di-cache
+          files: [
+            '/index.html',
+            '/assets/style.css',
+            '/assets/app.js',
+            '/assets/image.png',
+          ],
+        },
+      ],
+      expiration: {
+        // Nama cache
+        cacheName: 'my-app',
+        // File-file yang akan di-cache
+        files: [
+          '/index.html',
+          '/assets/style.css',
+          '/assets/app.js',
+          '/assets/image.png',
+        ],
+        // Durasi cache
+        duration: {
+          days: 7,
+        },
+      },
+    }),
+  ],
 })
