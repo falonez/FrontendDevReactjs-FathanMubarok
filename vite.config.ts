@@ -16,9 +16,6 @@ export default defineConfig({
             handler: "CacheFirst",
             options: {
               cacheName: "images",
-              expiration: {
-                maxEntries: 10,
-              },
             },
           },
           {
@@ -29,9 +26,6 @@ export default defineConfig({
               cacheableResponse: {
                 statuses: [0,200],
               },
-              expiration: {
-                maxEntries: 10,
-              },
             },
           },
           {
@@ -41,9 +35,6 @@ export default defineConfig({
               cacheName: "Detail",
               cacheableResponse: {
                 statuses: [0,200],
-              },
-              expiration: {
-                maxEntries: 10,
               },
             },
           },
