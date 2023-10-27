@@ -22,7 +22,8 @@ export default defineConfig({
             },
           },
           {
-            urlPattern:( ({url}) => url.origin === "https://restaurant-api.dicoding.dev/"),
+            // url patter hit api https://restaurant-api.dicoding.dev/ 
+            urlPattern: new RegExp("https://restaurant-api.dicoding.dev/"),
             handler: "CacheFirst" as const,
             options: {
               cacheName: "api",
