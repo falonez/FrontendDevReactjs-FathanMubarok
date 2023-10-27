@@ -10,6 +10,31 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ["**/*"],
+        runtimeCaching: [
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|json|html|css)$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "images",
+              expiration: {
+                maxEntries: 10,
+              },
+            },
+          },
+          {
+            urlPattern:( ({url}) => url.origin === "https://restaurant-api.dicoding.dev/"),
+            handler: "CacheFirst" as const,
+            options: {
+              cacheName: "api",
+              cacheableResponse: {
+                statuses: [0,200],
+              },
+              expiration: {
+                maxEntries: 10,
+              },
+            },
+          }
+        ],
       },
       // add this to cache all the
       // static assets in the public folder
