@@ -22,11 +22,12 @@ export default defineConfig({
             },
           },
           {
-            // url patter hit api https://restaurant-api.dicoding.dev/ 
-            urlPattern: new RegExp("https://restaurant-api.dicoding.dev/"),
+            urlPattern: ({url}) =>{
+              return url.pathname.startsWith("/list");
+            },
             handler: "CacheFirst" as const,
             options: {
-              cacheName: "api",
+              cacheName: "List",
               cacheableResponse: {
                 statuses: [0,200],
               },

@@ -44,7 +44,7 @@ interface reviewForm{
     review: string;
 }
 const useRestarurant = () => {
-  const api = 'https://restaurant-api.dicoding.dev/'
+  const api = 'https://restaurant-api.dicoding.dev'
   const [restaurant, setRestaurant] = useState<RestaurantAll[]>([])
   const [detailRestaurant, setDetailRestaurant] = useState<Restaurant>()
   
