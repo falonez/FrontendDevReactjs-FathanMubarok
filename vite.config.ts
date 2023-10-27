@@ -22,7 +22,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: new RegExp('^https://restaurant-api.dicoding.dev//list'),
+            urlPattern: new RegExp('^https://restaurant-api.dicoding.dev/list'),
             handler: "CacheFirst" as const,
             options: {
               cacheName: "List",
