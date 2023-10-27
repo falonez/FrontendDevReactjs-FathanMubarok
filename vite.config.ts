@@ -44,6 +44,14 @@ export default defineConfig({
         start_url: "/",
         orientation: "portrait",
       },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: new RegExp('^https://api.example.com/'),
+            handler: 'StaleWhileRevalidate',
+          },
+        ],
+      },
     }),
   ],
   // Konfigurasi lainnya
