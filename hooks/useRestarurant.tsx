@@ -45,6 +45,7 @@ interface reviewForm{
 }
 const useRestarurant = () => {
   const api = 'https://restaurant-api.dicoding.dev'
+  const googleMapsApiKey = "AIzaSyCt1Ulw6Yll6xvehBMaxBElO8mTt6pXM6k"
   const [restaurant, setRestaurant] = useState<RestaurantAll[]>([])
   const [detailRestaurant, setDetailRestaurant] = useState<Restaurant>()
   
@@ -144,6 +145,18 @@ const addReview = async (form:reviewForm) => {
     }
 }
 
+const getCoordinate = async (address:string) => {
+    try{
+        const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleMapsApiKey}`,{
+            method: 'GET',
+        })
+        const data = await res.json()
+        return data.results[0]?.geometry?.location
+    }catch(err){
+        console.log(err)
+        throw err
+    }
+}
 
   return{
     restaurant,
@@ -151,7 +164,8 @@ const addReview = async (form:reviewForm) => {
     getDetailRestaurant,
     detailRestaurant,
     filterCategory,
-    addReview
+    addReview,
+    getCoordinate
   }
 }
 

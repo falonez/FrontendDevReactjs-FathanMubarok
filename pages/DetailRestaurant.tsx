@@ -1,9 +1,10 @@
-import {useEffect, useState} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import useRestarurant from '../hooks/useRestarurant'
 import {Link, useParams} from 'react-router-dom'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const DetailRestaurant : React.FC = () => {
-  const {getDetailRestaurant, detailRestaurant, addReview} = useRestarurant()
+  const {getDetailRestaurant, detailRestaurant, addReview, getCoordinate} = useRestarurant()
   const {id} = useParams()
   const [reviewState, setReview] = useState({
     id: String(id),
@@ -25,8 +26,41 @@ const DetailRestaurant : React.FC = () => {
       console.log(res)
     })
   }
-  console.log(reviewReverse)
-  console.log(detailRestaurant?.customerReviews?.reverse())
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyCt1Ulw6Yll6xvehBMaxBElO8mTt6pXM6k"
+  })
+  
+  const containerStyle = {
+    width: "100%",
+    height: '50vh'
+  };
+  
+  const defaultCenter = {
+    lat: -3.745,
+    lng: -38.523
+  };
+
+  const [map, setMap] = useState(null)
+
+  const onLoad = useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds(defaultCenter);
+    map.fitBounds(bounds);
+
+    setMap(map)
+  }, [])
+
+  const onUnmount = useCallback(function callback() {
+    setMap(null)
+  }, [])
+
+  
+
+  useEffect(() => {
+    getCoordinate(detailRestaurant?.address + detailRestaurant?.city).then((res)=>{
+      setMap(res)
+    })
+  },[detailRestaurant?.address])
   return (
     <>
       <div className='w-full h-[20rem]'>
@@ -52,11 +86,35 @@ const DetailRestaurant : React.FC = () => {
         <p className=' text-lg'>{detailRestaurant?.description}</p>
         <div className='mt-10 justify-start flex'>
           <div className='w-full h-full flex flex-col'>
-            <input type="text" placeholder='Name' className='h-10 p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, name:e.target.value})}/>
-            <textarea placeholder='Please Give your Review' className='h-[5rem] p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, review:e.target.value})}/>
-            <div className='flex justify-end mb-10'>
-              <button className='text-center w-20 bg-blue-800 py-2 text-white hover:bg-blue-500' onClick={handleAddReview}>Send</button>
+            <div className='flex flex-row justify-between gap-10'>
+            <div className='w-1/2 flex flex-col gap-2'>
+              <h1 className='font-semibold text-xl'>{detailRestaurant?.address}</h1>
+              {isLoaded &&  <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={map}
+                zoom={10}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+              >
+                { /* Child components, such as markers, info windows, etc. */ }
+                <Marker
+                  position={map}
+                />
+                
+                <></>
+              </GoogleMap>}
             </div>
+              <div className='w-1/2 flex flex-col gap-2'>
+                <h1 className='font-semibold text-xl'>Give Your Review !!</h1>
+                <input type="text" placeholder='Name' className='h-10 p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, name:e.target.value})}/>
+                <textarea placeholder='Please Give your Review' className='h-[5rem] p-4 text-black ring-2 ring-blue-600 mb-4 rounded-lg' onChange={(e)=>setReview({...reviewState, review:e.target.value})}/>
+                <div className='flex justify-end mb-10'>
+                  <button className='text-center w-20 bg-blue-800 py-2 text-white hover:bg-blue-500' onClick={handleAddReview}>Send</button>
+                </div>
+              </div>
+            </div>
+           
+            <h1 className='text-xl font-semibold mb-4 mt-20'>Reviews</h1>
             <div className='w-full h-full'>
               {reviewReverse?.map((item,index)=>{
                 return(
@@ -70,6 +128,7 @@ const DetailRestaurant : React.FC = () => {
             </div>
           </div>
         </div>
+       
         {/* <div className='flex justify-end'>
           <Link to='/'>
             <button className='text-center w-20 bg-blue-800 py-2 text-white hover:bg-blue-500 mt-10'>Back</button>
